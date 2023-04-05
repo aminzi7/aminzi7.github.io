@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    <meta name="description" content="Hexo Theme Redefine">
+    <meta name="author" content="aminzi">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-redefine.png">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://aminzi7.github.io/2023/04/05/render/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="网页被解析的过程从服务器下载 index.html 文件，遇到 link 就下载 css ，遇到 script 就下载 js   加载 html 然后对 html 进行从上到下解析。 解析 html 的时候 加载 css，加载css完成然后对 css 进行解析。  解析hmtl 的时候，加载css 是不会影响 html 的解析，因为是独立的线程完成的  【第一步】html 解析得到 DOM Tre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器渲染流程">
+<meta property="og:url" content="https://aminzi7.github.io/2023/04/05/Render/index.html">
+<meta property="og:site_name" content="Aminzi">
+<meta property="og:description" content="网页被解析的过程从服务器下载 index.html 文件，遇到 link 就下载 css ，遇到 script 就下载 js   加载 html 然后对 html 进行从上到下解析。 解析 html 的时候 加载 css，加载css完成然后对 css 进行解析。  解析hmtl 的时候，加载css 是不会影响 html 的解析，因为是独立的线程完成的  【第一步】html 解析得到 DOM Tre">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s1.ax1x.com/2023/04/05/ppIiI39.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/04/05/ppIFvZV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/04/05/ppIiWAU.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/04/05/ppIihh4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/04/05/ppIFvZV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/04/05/ppIi59J.png">
+<meta property="article:published_time" content="2023-04-04T17:45:11.000Z">
+<meta property="article:modified_time" content="2023-04-05T13:33:50.297Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2023/04/05/ppIiI39.png">
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="../../../../images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="../../../../../../../../images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            浏览器渲染流程 -
+        
+        博客
+    </title>
+    
+<link rel="stylesheet" href="../../../../css/style.css">
+
+    
+<link rel="stylesheet" href="assets/fonts.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"aminzi7.github.io","root":"/","language":"en"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[""]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"busuanzi_counter":{"enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true},"home_banner":{"enable":true,"image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"aminzi","subtitle":{"text":["hi there!","I'm aminzi.","Welcome!"],"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"audios":[{"name":null,"artist":null,"url":null,"cover":null},{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
+    Global.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="main-content-container">
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                博客
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="../../../../index.html"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="../../../../index.html"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+
+            
+            
+                <div class="article-title">
+                    <h1 class="article-title-regular">浏览器渲染流程</h1>
+                </div>
+            
+                
+            
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="https://s1.ax1x.com/2023/04/05/ppIV3LR.jpg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">aminzi</span>
+                            
+                                <span class="author-label"></span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-04-05 01:45:11</span>
+        <span class="mobile">2023-04-05 01:45</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-04-05 21:33:50</span>
+            <span class="mobile">2023-04-05 21:33</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+    
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <h2 id="网页被解析的过程"><a href="#网页被解析的过程" class="headerlink" title="网页被解析的过程"></a>网页被解析的过程</h2><p>从服务器下载 <code>index.html</code> 文件，遇到 <code>link</code> 就下载 <code>css</code> ，遇到 <code>script</code> 就下载 <code>js</code></p>
+<p><a target="_blank" rel="noopener" href="https://imgse.com/i/ppIiI39"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://s1.ax1x.com/2023/04/05/ppIiI39.png"
+                      alt="ppIiI39.png"
+                ></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgse.com/i/ppIFvZV"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://s1.ax1x.com/2023/04/05/ppIFvZV.png"
+                      alt="ppIFvZV.png"
+                ></a></p>
+<p>加载 <code>html</code> 然后对 <code>html</code> 进行从上到下解析。</p>
+<p>解析 <code>html</code> 的时候 加载 <code>css</code>，加载<code>css</code>完成然后对 <code>css</code> 进行解析。</p>
+<ul>
+<li>解析<code>hmtl</code> 的时候，加载<code>css</code> 是不会影响 <code>html</code> 的解析，因为是独立的线程完成的</li>
+</ul>
+<p>【第一步】<code>html</code> 解析得到 <code>DOM Tree</code></p>
+<p>【第二步】<code>css</code> 解析得到 <code>Style Rules</code> 可以称为 <code>cssom tree</code><br><a target="_blank" rel="noopener" href="https://imgse.com/i/ppIiWAU"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://s1.ax1x.com/2023/04/05/ppIiWAU.png"
+                      alt="ppIiWAU.png"
+                ></a><br>【第三步】将 <code>DOM Tree</code> 和 <code>cssom Tree</code> 结合在一起 形成 <code>RenderTree</code></p>
+<p><code>RenderTree</code> 交给 <code>Layout</code>(布局引擎)</p>
+<p><code>Layout</code> 计算布局(大小、位置)信息</p>
+<p>注意</p>
+<p><code>RenderTree</code> 是有节点，但是没有节点的大小和位置的信息，只记录节点的样式</p>
+<p>为什么没有节点的大小和位置的信息？</p>
+<ul>
+<li>因为有些节点是 <code>display:none</code> 是没有出现在 <code>RenderTree</code></li>
+</ul>
+<p>linke 元素不会阻塞 <code>DOMTree</code> 构建过程，但是会阻塞 ·Render tree` 构建过程</p>
+<p><code>RenderTree</code> 需要 <code>cssom tree</code> 和 <code>DOMTree</code></p>
+<p>【第四步】布局(layout)和绘制(paint)</p>
+<ul>
+<li>布局</li>
+</ul>
+<p>渲染树记录节点样式</p>
+<p>布局是呈现节点中的样式的宽度、高度和位置的信息</p>
+<ul>
+<li>绘制</li>
+</ul>
+<p>在绘制阶段，浏览器将布局阶段计算的每个 frame（样式的宽高和位置） 转为屏幕上实际的像素点</p>
+<p>包括元素可见部分进行绘制，比如：文本、颜色、边框、阴影、替换元素（img）</p>
+<p>回流(reflow)和重绘(repaint)<br><a target="_blank" rel="noopener" href="https://imgse.com/i/ppIihh4"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://s1.ax1x.com/2023/04/05/ppIihh4.png"
+                      alt="ppIihh4.png"
+                ></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgse.com/i/ppIFvZV"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://s1.ax1x.com/2023/04/05/ppIFvZV.png"
+                      alt="ppIFvZV.png"
+                ></a></p>
+<ul>
+<li>回流</li>
+</ul>
+<p>第一次计算节点宽高和位置的时候，是布局</p>
+<p>之后再次重新计算节点宽高和位置的时候，是回流</p>
+<ul>
+<li><p>发生回流情况</p>
+</li>
+<li><p><input disabled="" type="checkbox">  DOM 结构发生变化。</p>
+<ul>
+<li><input disabled="" type="checkbox"> 🌰 删除 dom 节点 ，下面的节点会向上顶</li>
+</ul>
+</li>
+<li><p><input disabled="" type="checkbox">  改变布局</p>
+<ul>
+<li><input disabled="" type="checkbox"> 🌰 修改 width、height、padding、font-size</li>
+</ul>
+</li>
+<li><p><input disabled="" type="checkbox">  改变浏览器的窗口大小 （resize）</p>
+</li>
+<li><p><input disabled="" type="checkbox">  调用 getComputedStyle 方法 获取尺寸、位置</p>
+</li>
+<li><p>重绘 repaint</p>
+</li>
+</ul>
+<p>第一次渲染内容，是绘制</p>
+<p>之后重新渲染内容，是重绘</p>
+<ul>
+<li>发生重绘的情况</li>
+</ul>
+<p>修改背景颜色、文字颜色、边框颜色、样式</p>
+<p>回流一定引起重绘，所以回流很消耗性能</p>
+<ul>
+<li>开发尽量避免发生回流</li>
+<li><input disabled="" type="checkbox"> 尽量一次性修改样式<ul>
+<li><input disabled="" type="checkbox"> 🌰 通 cssText 修改，通过添加 class 修改</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> 避免频繁操作 DOM<ul>
+<li><input disabled="" type="checkbox"> 如果频繁操作 DOM，可以使用 DocumentFragment 或者父元素中将要操作 DOM 快完成时候，再一次性操作完成</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> 避免 调用 getComputedStyle 方法 获取尺寸、位置</li>
+<li><input disabled="" type="checkbox"> 使用 position 和 absolute 或 fixed<ul>
+<li><input disabled="" type="checkbox"> 虽然会引起回流，但是能减少开销（如果修改节点的大小，那么只计算大小，而减少位置的计算）</li>
+</ul>
+</li>
+</ul>
+<h2 id="特殊解析-Composite-合成"><a href="#特殊解析-Composite-合成" class="headerlink" title="特殊解析 - Composite(合成)"></a>特殊解析 - Composite(合成)</h2><p>浏览器的一种优化手段</p>
+<p>绘制的过程，可以将布局后的元素绘制到多个合成图层中</p>
+<p>默认情况下，标准流中的内容都是被绘制在同一个图层（Layer）中</p>
+<ul>
+<li>每个合成图层都是单独渲染的</li>
+</ul>
+<p>一些特殊的属性，会创建一个新的合成层（CompositingLayer）,并且新的图层能例用 GPU 加速绘制</p>
+<p>一些特殊的属性</p>
+<ul>
+<li><input disabled="" type="checkbox"> 3D transforms (translateZ（xxxxpx）)</li>
+<li><input disabled="" type="checkbox"> video、canvas、iframe</li>
+<li><input disabled="" type="checkbox"> opacity 动画转换时；</li>
+<li><input disabled="" type="checkbox"> position: fixed (固定定位)</li>
+<li><input disabled="" type="checkbox"> will-change：一个实验性的属性，提前告诉浏览器元素可能发生哪些变化；</li>
+<li><input disabled="" type="checkbox"> animation 或 transition 设置了 opacity（透明度）、transform</li>
+</ul>
+<p>分层确实可以提高性能，但是它以内存管理为代价，因此不应作为 web 性能优化策略的一部分过度使用。</p>
+<p>大白话：</p>
+<p>那些属性可以在新的图层，使用 gpu 加速绘制，完成后合并到标准流的图层中。</p>
+<p>🌰 translateZ（xxxxpx）向 z 轴位移</p>
+<p>🌰 opacity（透明度）<br><a target="_blank" rel="noopener" href="https://imgse.com/i/ppIi59J"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://s1.ax1x.com/2023/04/05/ppIi59J.png"
+                      alt="ppIi59J.png"
+                ></a><br>注意滥用的代价是创建多个新的图层内存会大，内存换取性能。</p>
+<p>will-change 提前告诉浏览器元素可能发生哪些变 对于在标准流图层中不需要使用，这回造成创建多个新的图层会造成内存大。</p>
+<p>对于用户交互的方式使用会比较好。因为这些如果在同一个图层中会消耗性能，会引起回流或者重绘，所以避免回流和重绘，需要在新的图层中进行 gpu 加速绘制。比如鼠标互动的一些位移效果</p>
+<h2 id="defer-async"><a href="#defer-async" class="headerlink" title="defer / async"></a>defer / async</h2><p>默认情况下</p>
+<p>浏览器从上到下执行代码，遇到 link 标签加载 css 不会阻塞 DOMTree 的构建。</p>
+<p>但是碰到 script 会暂停 DOMTree 构建 也就是阻塞，后面的 dom 不解析了。</p>
+<p>需要等待 script 加载和执行完毕，才继续解析后面的 html，构建 DOMTree。</p>
+<p>为什么需要等待 script 加载和执行完毕，才继续解析后面的 html，构建 DOMTree？</p>
+<p>如果把所有的 html 都解析完，构建 DOMTree 。后面执行 script 可能会有操作 dom。</p>
+<p>这个会引起重流和重绘，DOMTree → RenderTree → Layout → 绘制</p>
+<p>defer</p>
+<p>在解析 html 中，构建 DOMTree 中碰到 script 不会阻塞 DOMTree 的构建。</p>
+<p>作用是先下载 script ，等待 DOMTree 的构建完成后，在 DOMContentLoaded 事件之前先执行 defer 中 script 的代码</p>
+<ul>
+<li>外多个带 defer 的脚本是可以保持正确的顺序执行的</li>
+<li>推荐放到 head 元素中，先最快预先下载完成</li>
+<li>defer 仅适用于外部脚本，对于 script 默认内容会被忽略</li>
+</ul>
+<p>async</p>
+<p>没有顺序，完全独立的，无论 DOMTree 构建完成没，下载完成就执行</p>
+
+            </div>
+
+            
+                <div class="post-copyright-info">
+                    <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 浏览器渲染流程</li>
+        <li><strong>Author:</strong> aminzi</li>
+        <li><strong>Created at:</strong> 2023-04-05 01:45:11</li>
+        
+            <li>
+                <strong>Updated at:</strong> 2023-04-05 21:33:50
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/2023/04/05/Render/
+        </li>
+        <li>
+            <strong>License:</strong> This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+        </li>
+    </ul>
+</div>
+
+                </div>
+            
+
+            
+
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="../hello-world/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">Hello World</span>
+                                    <span class="post-nav-item">Next posts</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">浏览器渲染流程</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E9%A1%B5%E8%A2%AB%E8%A7%A3%E6%9E%90%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-text">网页被解析的过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E8%A7%A3%E6%9E%90-Composite-%E5%90%88%E6%88%90"><span class="nav-text">特殊解析 - Composite(合成)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#defer-async"><span class="nav-text">defer &#x2F; async</span></a></li></ol>
+
+    </div>
+</div>
+            </div>
+        
+    </div>
+</div>
+
+
+                
+
+            </div>
+            
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">aminzi</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        VISITOR COUNT&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        TOTAL PAGE VIEWS&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            <span class="powered-by-container">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a></span>
+                <br>
+            <span class="theme-version-container">THEME&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.0</a>
+        </div>
+        
+        
+        
+            <div id="start_div" style="display:none">
+                2022/8/17 11:45:14
+            </div>
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+        
+            <script async data-pjax>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+
+</main>
+
+
+
+
+<script src="js/utils.js"></script>
+
+<script src="js/main.js"></script>
+
+<script src="js/layouts/navbarShrink.js"></script>
+
+<script src="js/tools/scrollTopBottom.js"></script>
+
+<script src="js/tools/lightDarkSwitch.js"></script>
+
+
+
+
+
+    
+<script src="js/tools/codeBlock.js"></script>
+
+
+
+
+    
+<script src="js/layouts/lazyload.js"></script>
+
+
+
+
+    
+<script src="js/tools/runtime.js"></script>
+
+    
+<script src="js/layouts/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="js/libs/Typed.min.js"></script>
+
+  
+<script src="js/plugins/typed.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="js/tools/tocToggle.js"></script>
+
+<script src="js/libs/anime.min.js"></script>
+
+<script src="js/layouts/toc.js"></script>
+
+<script src="js/plugins/tabs.js"></script>
+
+    
+</div>
+
+
+    
+<script src="js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            Global.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            Global.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            Global.refresh();
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>
