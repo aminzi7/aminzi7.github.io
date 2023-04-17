@@ -14,34 +14,41 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://aminzi7.github.io/archives/2023/04/"/>
+    <link rel="canonical" href="https://aminzi7.github.io/2023/04/18/v8/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta property="og:type" content="website">
-<meta property="og:title" content="Aminzi">
-<meta property="og:url" content="https://aminzi7.github.io/archives/2023/04/index.html">
+        <meta name="description" content="v8 的主流程 123js → Parse → AST（抽象语法树） → Ignition → bytecode（字节码）→ cpu 运行指令                                            |                                         TurboFan → 优化的机器指令  情况: 先词法分析 -&gt; 后语法分析 v">
+<meta property="og:type" content="article">
+<meta property="og:title" content="v8">
+<meta property="og:url" content="https://aminzi7.github.io/2023/04/18/v8/index.html">
 <meta property="og:site_name" content="Aminzi">
+<meta property="og:description" content="v8 的主流程 123js → Parse → AST（抽象语法树） → Ignition → bytecode（字节码）→ cpu 运行指令                                            |                                         TurboFan → 优化的机器指令  情况: 先词法分析 -&gt; 后语法分析 v">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s1.ax1x.com/2023/04/17/p9PUbJP.md.png">
+<meta property="og:image" content="https://s1.ax1x.com/2023/04/17/p9PUHit.md.png">
+<meta property="article:published_time" content="2023-04-17T16:00:16.000Z">
+<meta property="article:modified_time" content="2023-04-17T16:08:17.961Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2023/04/17/p9PUbJP.md.png">
     
     <!--- Icon Part-->
-    <link rel="icon" type="image/png" href="../../../images/redefine-favicon.svg" sizes="192x192">
-    <link rel="apple-touch-icon" sizes="180x180" href="../../../images/redefine-favicon.svg">
+    <link rel="icon" type="image/png" href="../../../../images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../images/redefine-favicon.svg">
     <meta name="theme-color" content="#A31F34">
-    <link rel="shortcut icon" href="../../../../../../images/redefine-favicon.svg">
+    <link rel="shortcut icon" href="../../../../../../../../images/redefine-favicon.svg">
     <!--- Page Info-->
     
     <title>
         
-            Archive: 2023/4 -
+            v8 -
         
         热气哦
     </title>
     
-<link rel="stylesheet" href="../../../css/style.css">
+<link rel="stylesheet" href="../../../../css/style.css">
 
     
 <link rel="stylesheet" href="assets/fonts.css">
@@ -122,7 +129,7 @@
                             <li class="navbar-item">
                                 <!-- Menu -->
                                 <a class="" 
-                                    href="../../../index.html"  >
+                                    href="../../../../index.html"  >
                                     
                                         
                                             <i class="fa-regular fa-house"></i>
@@ -154,7 +161,7 @@
                 
                     <li class="drawer-navbar-item flex-center">
                         <a class="" 
-                        href="../../../index.html"  >
+                        href="../../../../index.html"  >
                              
                                 
                                     <i class="fa-regular fa-house"></i>
@@ -185,48 +192,185 @@
 
                 
                     <div class="fade-in-down-animation">
-    <div class="archive-container ">
-        
-<div class="archive-list-container">
+    <div class="post-page-container">
+        <div class="article-content-container">
+
+            
+            
+                <div class="article-title">
+                    <h1 class="article-title-regular">v8</h1>
+                </div>
+            
+                
+            
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="https://s1.ax1x.com/2023/04/05/ppIV3LR.jpg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">aminzi</span>
+                            
+                                <span class="author-label"></span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-04-18 00:16</span>
+        <span class="mobile">2023-04-18 00</span>
+        <span class="hover-info">Created</span>
+    </span>
     
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2023</span>
-                <span class="archive-year-post-count">[4]</span>
-            </div>
-            <ul class="article-list">
-              
-              <li class="article-item" date-is='04-18'>
-                <a href="../../../2023/04/18/v8/">
-                  <span class="article-title">v8</span>
-                </a>
-              </li>
-              
-              <li class="article-item" date-is='04-17'>
-                <a href="../../../2023/04/17/this/">
-                  <span class="article-title">this绑定和优先级</span>
-                </a>
-              </li>
-              
-              <li class="article-item" date-is='04-05'>
-                <a href="../../../2023/04/05/Render/">
-                  <span class="article-title">浏览器渲染流程</span>
-                </a>
-              </li>
-              
-              <li class="article-item" date-is='04-05'>
-                <a href="../../../2023/04/05/hello-world/">
-                  <span class="article-title">Hello World</span>
-                </a>
-              </li>
-              
-            </ul>
-        </section>
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-04-18 00:08:17</span>
+            <span class="mobile">2023-04-18 00:08</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+    
     
 </div>
 
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <p><a target="_blank" rel="noopener" href="https://imgse.com/i/p9PUbJP"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://s1.ax1x.com/2023/04/17/p9PUbJP.md.png"
+                      alt="v8流程图"
+                ></a><br>v8 的主流程</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">js → Parse → AST（抽象语法树） → Ignition → bytecode（字节码）→ cpu 运行指令</span><br><span class="line">                                            |</span><br><span class="line">                                         TurboFan → 优化的机器指令</span><br></pre></td></tr></table></figure></div>
+
+<p>情况: 先词法分析 -&gt; 后语法分析</p>
+<p>v8 得到 js 代码会进行 Scanner（扫描器）进行词法法分析</p>
+<p>词法分析</p>
+<p>对每一行代码进行分词，比如 var 一个词语、age 一个词语</p>
+<p>生成一个个 token（tokenization，记号化）</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> age = <span class="number">18</span></span><br></pre></td></tr></table></figure></div>
+
+<p>语法分析（parse）</p>
+<p>分析具体语法，var 就是关键字</p>
+<p>得到 js 代码会进行 Scanner（扫描器）进行词法法分析</p>
+<p>词法分析</p>
+<p>对每一行代码进行分词，比如 var 一个词语、age 一个词语</p>
+<p>生成一个个 token（tokenization，记号化）</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> age = <span class="number">18</span></span><br></pre></td></tr></table></figure></div>
+
+<p>语法分析（parse）</p>
+<p>分析具体语法，var 就是关键字得到 js 代码会进行 Scanner（扫描器）进行词法法分析</p>
+<p>词法分析</p>
+<p>对每一行代码进行分词，比如 var 一个词语、age 一个词语</p>
+<p>生成一个个 token（tokenization，记号化）</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> age = <span class="number">18</span></span><br></pre></td></tr></table></figure></div>
+
+<p>语法分析（parse）</p>
+<p>分析具体语法，var 就是关键字 v8 流程图</p>
+<p>对于频繁调用的函数每次都转为字节码，然后转为 cup 指令。这一个过程是很消耗性能的</p>
+<p>TurboFan 把需要频繁调用的函数进行优化和标记为热函数，之后碰到频繁调用的函数就使用优化后的机器指令</p>
+<ul>
+<li>但是注意，对于频繁调用的函数突然改变，比如函数的形参类型改变，就会进行反向优化。而 ts 能限制函数形参方面的处理，在某些方面 ts 是对代码的优化</li>
+</ul>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">sum</span>(<span class="params">a,b</span>)&#123;</span><br><span class="line">  <span class="keyword">return</span> a+b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">sum</span>(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line"><span class="title function_">sum</span>(<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line"><span class="title function_">sum</span>(<span class="string">&#x27;2&#x27;</span>,<span class="string">&#x27;2&#x27;</span>)  <span class="comment">// x</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Parse-模块"><a href="#Parse-模块" class="headerlink" title="Parse 模块"></a>Parse 模块</h2><p>将 js 代码，转为 AST 语法树。后面的解释器不认识 js 代码</p>
+<ul>
+<li>如果 js 函数没有被调用，那么是不会被转为 AST</li>
+</ul>
+<h2 id="Ignition-解释器"><a href="#Ignition-解释器" class="headerlink" title="Ignition 解释器"></a>Ignition 解释器</h2><p>将 AST 转为 字节码</p>
+<ul>
+<li>会收集 TurboFan 需要优化的信息（比如函数的参数类型信息）</li>
+<li>如果函数只调用一次，Ignition 是执行字节码，而不经过 TurboFan</li>
+</ul>
+<h2 id="字节码"><a href="#字节码" class="headerlink" title="字节码"></a>字节码</h2><ul>
+<li>跨平台</li>
+<li>可以在 win 电脑 cpu 架构上运行，转为对应 cpu 的指令</li>
+<li>可以在 win 电脑 cpu 架构上运行，转为对应 cpu 的指令</li>
+</ul>
+<h2 id="Scanner-扫描器"><a href="#Scanner-扫描器" class="headerlink" title="Scanner 扫描器"></a>Scanner 扫描器</h2><p><a target="_blank" rel="noopener" href="https://imgse.com/i/p9PUHit"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://s1.ax1x.com/2023/04/17/p9PUHit.md.png"
+                      alt="扫描器"
+                ></a><br>得到 js 代码会进行 Scanner（扫描器）进行词法法分析</p>
+<p>词法分析</p>
+<p>对每一行代码进行分词，比如 var 一个词语、age 一个词语</p>
+<p>得到 js 代码会进行 Scanner（扫描器）进行词法法分析</p>
+<p>词法分析</p>
+<p>对每一行代码进行分词，比如 var 一个词语、age 一个词语</p>
+<p>生成一个个 token（tokenization，记号化）</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> age = <span class="number">18</span></span><br></pre></td></tr></table></figure></div>
+
+<p>语法分析（parse）</p>
+<p>分析具体语法，var 就是关键字生成一个个 token（tokenization，记号化）</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> age = <span class="number">18</span></span><br></pre></td></tr></table></figure></div>
+
+<p>语法分析（parse）</p>
+<p>分析具体语法，var 就是关键字</p>
+
+            </div>
+
+            
+
+            
+
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="../../17/this/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">this绑定和优先级</span>
+                                    <span class="post-nav-item">Next posts</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">v8</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Parse-%E6%A8%A1%E5%9D%97"><span class="nav-text">Parse 模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ignition-%E8%A7%A3%E9%87%8A%E5%99%A8"><span class="nav-text">Ignition 解释器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E7%A0%81"><span class="nav-text">字节码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scanner-%E6%89%AB%E6%8F%8F%E5%99%A8"><span class="nav-text">Scanner 扫描器</span></a></li></ol>
+
     </div>
 </div>
+            </div>
+        
+    </div>
+</div>
+
 
                 
 
@@ -302,6 +446,23 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
@@ -412,6 +573,16 @@
 
 
 <div class="post-scripts pjax">
+    
+        
+<script src="js/tools/tocToggle.js"></script>
+
+<script src="js/libs/anime.min.js"></script>
+
+<script src="js/layouts/toc.js"></script>
+
+<script src="js/plugins/tabs.js"></script>
+
     
 </div>
 

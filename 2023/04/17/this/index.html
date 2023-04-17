@@ -21,13 +21,13 @@
     
         <meta name="description" content="this 指向的情况，调用的方式有关与 this 所处的函数没多少关系，绑定和定义的位置（编写的位置）没有关系 函数在调用时，JavaScript 会默认给 this 绑定一个值 函数被调用方式有关，绑定和调用方式以及调用的位置有关系 this 是在运行时被绑定的 开发中常常用在函数使用  所有的函数在被调用时，都会创建一个执行上下文 这个上下文中记录着函数的调用栈、AO 对象等 this 也是其">
 <meta property="og:type" content="article">
-<meta property="og:title" content="this">
+<meta property="og:title" content="this绑定和优先级">
 <meta property="og:url" content="https://aminzi7.github.io/2023/04/17/this/index.html">
 <meta property="og:site_name" content="Aminzi">
 <meta property="og:description" content="this 指向的情况，调用的方式有关与 this 所处的函数没多少关系，绑定和定义的位置（编写的位置）没有关系 函数在调用时，JavaScript 会默认给 this 绑定一个值 函数被调用方式有关，绑定和调用方式以及调用的位置有关系 this 是在运行时被绑定的 开发中常常用在函数使用  所有的函数在被调用时，都会创建一个执行上下文 这个上下文中记录着函数的调用栈、AO 对象等 this 也是其">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-04-17T15:20:56.000Z">
-<meta property="article:modified_time" content="2023-04-17T15:33:36.174Z">
+<meta property="article:modified_time" content="2023-04-17T15:53:56.370Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
     
@@ -40,9 +40,9 @@
     
     <title>
         
-            this -
+            this绑定和优先级 -
         
-        热气哦-博客
+        热气哦
     </title>
     
 <link rel="stylesheet" href="../../../../css/style.css">
@@ -112,7 +112,7 @@
             
             <a class="logo-title" href="/">
                 
-                热气哦-博客
+                热气哦
                 
             </a>
         </div>
@@ -195,7 +195,7 @@
             
             
                 <div class="article-title">
-                    <h1 class="article-title-regular">this</h1>
+                    <h1 class="article-title-regular">this绑定和优先级</h1>
                 </div>
             
                 
@@ -224,8 +224,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-04-17 23:33:36</span>
-            <span class="mobile">2023-04-17 23:33</span>
+            <span class="desktop">2023-04-17 23:53:56</span>
+            <span class="mobile">2023-04-17 23:53</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -313,8 +313,8 @@
 <h3 id="特殊的-this-指向"><a href="#特殊的-this-指向" class="headerlink" title="特殊的 this 指向"></a>特殊的 this 指向</h3><p>当 call/ apply/ bind 传入 null underfind，this 指向是 全局 window</p>
 <div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo.<span class="title function_">call</span>(<span class="literal">null</span>)</span><br><span class="line">foo.<span class="title function_">apply</span>(<span class="literal">null</span>)</span><br><span class="line">foo.<span class="title function_">bind</span>(<span class="literal">null</span>)()</span><br></pre></td></tr></table></figure></div>
 
-<h2 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h2><p>没有 this</p>
-<p>filter map reduce</p>
+<h2 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h2><p>没有 <code>this</code></p>
+<p>是通过作用域来访问上层的 <code>this</code></p>
 
             </div>
 
@@ -326,6 +326,21 @@
 
             
                 <div class="article-nav">
+                    
+                        <div class="article-prev">
+                            <a class="prev"
+                            rel="prev"
+                            href="../../18/v8/"
+                            >
+                                <span class="left arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </span>
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">v8</span>
+                                    <span class="post-nav-item">Prev posts</span>
+                                </span>
+                            </a>
+                        </div>
                     
                     
                         <div class="article-next">
@@ -355,7 +370,7 @@
                 <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">this</div>
+        <div class="page-title">this绑定和优先级</div>
         <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#this-%E6%8C%87%E5%90%91%E7%9A%84%E6%83%85%E5%86%B5%EF%BC%8C%E8%B0%83%E7%94%A8%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9C%89%E5%85%B3"><span class="nav-text">this 指向的情况，调用的方式有关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#this-%E7%BB%91%E5%AE%9A%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-text">this 绑定的情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%BB%98%E8%AE%A4%E7%BB%91%E5%AE%9A"><span class="nav-text">一、默认绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AD%E5%8C%85%E6%8C%87%E5%90%91-window"><span class="nav-text">闭包指向 window?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%9A%90%E5%BC%8F%E7%BB%91%E5%AE%9A"><span class="nav-text">二、隐式绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%98%BE%E7%A4%BA%E7%BB%91%E5%AE%9A"><span class="nav-text">三、显示绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#call-apply"><span class="nav-text">call&#x2F;apply</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bind"><span class="nav-text">bind</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81new-%E7%BB%91%E5%AE%9A"><span class="nav-text">四、new 绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#this-%E7%BB%91%E5%AE%9A%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-text">this 绑定的优先级</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E7%9A%84-this-%E6%8C%87%E5%90%91"><span class="nav-text">特殊的 this 指向</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0"><span class="nav-text">箭头函数</span></a></li></ol>
 
     </div>
